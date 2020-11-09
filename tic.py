@@ -40,9 +40,12 @@ def welcome():
 
 def replay(player1,player2):
 
+  #switch up player orders for new game
   newp1 = player2
   newp2 = player1
   play_again = input('Type "y" if you would like to play again: ')
+
+  #this skip var is to skip showing the players the instructions again
   skip = True
 
   if play_again == 'y':
@@ -51,12 +54,12 @@ def replay(player1,player2):
     print('\nHave a nice day.')
 
 #this is where the main game takes place
-#this could be split into smaller functions -- TK
 def tictactoe(player1='p1',player2='p2',skip=False):
 
   #this string shows the instructions
   instructions = 'Player 1 will play "X" and player 2 will play "O." You will be prompted to type the position where you would like to play your move.\nTop left = TL\nTop middle = TM\nTop right = TR\nMiddle left = ML\nMiddle middle = MM\nMiddle right = MR\nBottom left = BL\nBottom middle = BM\nBottom right = BR\n' 
 
+  #ternary that shows instructions depending on the skip var--default is false, it changes to true in the replay func
   print(instructions) if skip == False else print('\nThe player order has been switched, good luck.\n')
 
   #the main while loop is based on this variable (there can only be nine turns max in any given game)
@@ -78,6 +81,7 @@ def tictactoe(player1='p1',player2='p2',skip=False):
     ['TR', 'MM', 'BL'],
   ]
 
+  #default setting for game won var
   game_won = False
 
   #the entire game will run while there are less than the max no. of turns (9)
@@ -106,9 +110,6 @@ def tictactoe(player1='p1',player2='p2',skip=False):
     if pos_dict[position] != "_":
       print("\nThat position has already been filled, please choose another position\n")
       continue
-
-    #this is printed to acknowledge what was played
-    #print(f'{current_player} played {turn} in {position}\n')
 
     #the key value pair is updated to show what was played in which position
     pos_dict[position] = f"{turn}"
@@ -149,12 +150,13 @@ def tictactoe(player1='p1',player2='p2',skip=False):
           if len(xwin) == 3 and xwin[0] in win and xwin[1] in win and xwin[2] in win:
             game_won = True
 
-      #lastly if the game_won var was triggered, the while loop will exit here and print who won
+      #lastly if the game_won var was triggered, the while loop will exit here, print who won and call the replay func
       if game_won:
         print(f'{current_player} won!\n')
         replay(player1, player2)
         break
             
+      #exact same code but for the o list--maybe this can be refactored
       if len(o) >= 3:
         for win in wins:
           owin = []
@@ -170,8 +172,7 @@ def tictactoe(player1='p1',player2='p2',skip=False):
         replay(player1, player2)
         break
         
-
-    #necessary decrease of turns count
+    #necessary decrease of turns count for proper while loop function
     turns -= 1
 
   #this else statement is only launched if the while loop runs without breaks--if no one won--meaning that the game was a draw
@@ -179,5 +180,6 @@ def tictactoe(player1='p1',player2='p2',skip=False):
     print('This is a drawn game.\n')
     replay(player1, player2)
 
+#program is launched here
 welcome()
 
